@@ -1,4 +1,11 @@
 # daily_expenses_script.py
+import csv
+
+def savedataincsv():
+    with open('expenses.csv', 'w', newline='') as csvfile:
+        csvsaver = csv.writer(csvfile, delimiter='',
+                              quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        csvsaver.writerow([])
 
 def get_expenses():
     """Ask the user for daily expenses and return them as a list of floats."""
@@ -30,4 +37,16 @@ def display_summary(total, average, maximum, minimum):
     """Print the results nicely."""
     print("\n--- Expense Summary ---")
     print(f"Total spent: ${total:.2f}")
-    print(f"Average daily expense: ${average:.
+    print(f"Average daily expense: ${average:.2f}")
+    print(f"Maximum expense: ${maximum:.2f}")
+    print(f"Minimum expense: ${minimum:.2f}")
+
+
+def main():
+    expenses = get_expenses()
+    total, average, maximum, minimum = calculate_stats(expenses)
+    display_summary(total, average, maximum, minimum)
+
+
+if __name__ == "__main__":
+    main()
