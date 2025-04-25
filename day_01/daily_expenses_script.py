@@ -1,15 +1,11 @@
 # daily_expenses_script.py
 import csv
 
-def savedataincsv():
-    with open('expenses.csv', 'w', newline='') as csvfile:
-        csvsaver = csv.writer(csvfile, delimiter='',
-                              quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        csvsaver.writerow([])
 
 def get_expenses():
     """Ask the user for daily expenses and return them as a list of floats."""
     expenses = []
+    dates = []
     print("Enter your daily expenses (type 'done' when finished):")
     while True:
         entry = input("Expense: $")
@@ -19,7 +15,11 @@ def get_expenses():
             expenses.append(float(entry))
         except ValueError:
             print("Invalid input. Please enter a number.")
-    return expenses
+            
+        date = input("Insert the date in DD/MM format:")
+        dates.append(date)
+
+    return expenses, dates
 
 
 def calculate_stats(expenses):
@@ -42,10 +42,18 @@ def display_summary(total, average, maximum, minimum):
     print(f"Minimum expense: ${minimum:.2f}")
 
 
+def savedataincsv(expenses, data, dates):
+    with open(expenses, mode='w', newline='') as csvfile:
+        cswriter = csv.writer(csvfile)
+        cswriter.writerow(data)
+        cswriter.writerow(dates)
+
 def main():
-    expenses = get_expenses()
+    expenses, dates = get_expenses()
+    print(dates)
     total, average, maximum, minimum = calculate_stats(expenses)
     display_summary(total, average, maximum, minimum)
+    savedataincsv('example.csv', expenses, dates)
 
 
 if __name__ == "__main__":
